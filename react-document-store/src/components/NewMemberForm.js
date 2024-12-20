@@ -8,7 +8,7 @@ function NewMemberForm(props) {
             const name = props.newMemberDetails[1];
             const password = props.newMemberDetails[2];
             const access = props.newMemberDetails[3];
-            const response = await fetch('http://localhost:5000/new-member', {
+            const response = await fetch('https://familydocs-server.onrender.com/new-member', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

@@ -74,7 +74,7 @@ function Master() {
         try {
             const family_id = "fid-1";
             const creator = "SHAFAAT HUSSAIN KHAN"
-            const response = await fetch("http://localhost:5000/family-data", {
+            const response = await fetch("https://familydocs-server.onrender.com/family-data", {
                 method: "POST", // Ensure it's a POST request
                 headers: {
                     "Content-Type": "application/json",

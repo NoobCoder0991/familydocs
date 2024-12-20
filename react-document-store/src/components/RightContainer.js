@@ -7,7 +7,7 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs
 
 async function getFile(file_id) {
     try {
-        const response = await fetch(`http://localhost:5000/files/id`, {
+        const response = await fetch(`https://familydocs-server.onrender.com/files/id`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ id: file_id }),
@@ -262,7 +262,7 @@ function NewFileSubmitComponent(props) {
             formData.append("newFileName", customFileName.length ? customFileName : props.newFile.name);
             formData.append('type', fileType(props.newFile))
 
-            const response = await fetch("http://localhost:5000/upload", {
+            const response = await fetch("https://familydocs-server.onrender.com/upload", {
                 method: "POST",
                 body: formData, // Pass formData directly
                 credentials: 'include' // Include cookies for session
