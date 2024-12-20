@@ -131,7 +131,18 @@ function Master() {
     };
 
     // Loading and error handling
-    if (loading) return <div>Loading...</div>;
+    if (loading) return (
+        <div className="start-loader">
+            <h2 className="start-loader-text">
+                Site Loading
+            </h2>
+
+            <div className="start-loader-text">
+                This website is hosted on Render.com on a free plan. So, it may take upto 50 seconds to load. Please be patient.
+            </div>
+        </div>
+
+    )
     if (error) return <div>Error: {error}</div>;
 
     // Render the main component after data has loaded
