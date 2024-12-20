@@ -134,6 +134,7 @@ function handleRoutes(app, db, gfs) {
             const { family_id, password } = req.body;
             const familyData = await db.collection("families").findOne({ family_id, password });
             if (familyData) {
+                console.log("Auth successful")
                 const sessionToken = generateSessionToken(16);
                 req.session.sessionId = sessionToken;
                 await db.collection("sessionData").insertOne({ family_id, sessionId: sessionToken })
@@ -141,6 +142,7 @@ function handleRoutes(app, db, gfs) {
                 res.send({ ok: true });
             }
             else {
+                console.log("Auth unsuccessful")
                 res.send({ ok: false, errMessage: "Invalid Credentials" })
             }
 
