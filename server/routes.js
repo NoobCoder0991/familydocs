@@ -4,16 +4,19 @@ const { uploadToGridFS, upload } = require("./uploads");
 
 function handleRoutes(app, db, gfs) {
     app.post('/family-data', async (req, res) => {
+        console.log("Requested family data")
         try {
             const sessionId = req.session.sessionId;
             const sessionData = await db.collection("sessionData").findOne({ sessionId })
             if (sessionData) {
+
                 const family_id = sessionData.family_id;
                 const data = await db.collection("family-data").findOne({ family_id })
                 res.send({ ok: true, data })
 
             }
             else {
+                console.log("Failed, no matching for session id :", sessionId)
                 res.send({ ok: false })
             }
 
