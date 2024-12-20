@@ -23,7 +23,9 @@ const sessionMiddleware = session({
     saveUninitialized: false,
     cookie: {
         secure: true,
-        maxAge: 3600000
+        maxAge: 3600000,
+        sameSite: 'None',
+
     }
 });
 
