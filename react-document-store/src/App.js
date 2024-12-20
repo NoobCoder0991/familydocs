@@ -14,6 +14,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<Master />} />
                 <Route path="/login" element={<LoginPage />} />
+                <Route path="*" element={<Master />} />
             </Routes>
         </Router>
     )
