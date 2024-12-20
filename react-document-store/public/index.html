@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DocumentSpace</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+</head>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inclusive+Sans:ital@0;1&family=Inconsolata:wght@200..900&display=swap');
+
+
+
+    :root {
+
+
+        /*light-mode*/
+        --accent-color: rgb(90 55 95);
+
+        --body-color: #f0f0f0;
+        --body-color-dim: #e8e8e8;
+        --text-color: #2c2c2c;
+        --container-color: #ffffff;
+        --navbar-color: #f0f0f0;
+        --active-color: rgb(157 147 147 / 20%);
+        --my-message-color: #9bdf3d;
+        --my-message-color: #a7d862;
+        --friend-message-color: #fff;
+        --my-file-container: #95c750;
+        --friend-file-container: #f7f7f7;
+        --blue-tick-color: rgb(230, 208, 12);
+        --chat-info-color: rgba(255, 255, 255, 0.15);
+        --accept-color: #4792e5;
+        --accepted-color: var(--accent-dim);
+        --loading-color: #a9a9a9;
+        --unread-notification: #d1f0b2;
+        --unread-notification-hover: #b3e89e;
+        --blinky-color: #e0f7f7;
+        --light-color: #555;
+        --border-color-light: #ccc;
+        --hover-color-light: rgba(0, 0, 0, 0.1);
+        --hover-color-dark: rgba(0, 0, 0, 0.1);
+        --selected-message-color: #e0f7f7;
+        --sharp-color: #000;
+        --dark-container-color: #ddd;
+        --dark-sharp-color: #f5f5f5;
+
+        --faint-color: #grey;
+
+        --chat-background-opacity: 1;
+        --recent-message-chat-width: 50px;
+
+
+    }
+
+    body {
+        font-family: "Inclusive Sans", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+        width: 100vw;
+        height: 100vh;
+        padding: 0;
+        margin: 0;
+        background-color: var(--body-color);
+    }
+
+
+
+    #root {
+        width: 100%;
+        height: 100%;
+
+    }
+
+    .main {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        flex-grow: 1;
+
+    }
+
+    .navbar {
+        padding: 0.5rem;
+        display: flex;
+        align-items: center;
+        background-color: var(--navbar-color);
+        box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .left {
+
+        background-color: whitesmoke;
+        overflow: hidden;
+
+    }
+
+    @media screen and (max-width:900px) {
+        .left {
+            position: absolute;
+            height: 100%;
+        }
+
+    }
+
+    .right {
+        /* background-color: blue; */
+        padding: 0.5rem;
+        flex-grow: 1;
+    }
+
+    .container {
+        padding: 0.5rem;
+    }
+
+    .left-option {
+        display: flex;
+        margin: 0.5rem 0;
+        padding: 0.7rem 0.5rem;
+        cursor: pointer;
+        background-color: var(--container-color);
+        position: relative;
+
+
+    }
+
+    .left-option-details {
+        display: flex;
+    }
+
+    .access-tag {
+        right: 2px;
+        top: 2px;
+        padding: 0 5px;
+        border: 1px solid var(--light-color);
+        border-radius: 8px;
+        font-size: small;
+        z-index: 1;
+        background-color: white;
+        color: black;
+        display: none;
+
+
+    }
+
+    .icon {
+        margin-right: 0.5rem;
+    }
+
+
+    .left-active-option {
+        background-color: var(--accent-color);
+        color: white;
+    }
+
+    .welcome {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .welcome-title {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .welcome-description {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .welcome-description>div {
+        margin: 1rem 0;
+    }
+
+    .welcome-actions {
+        display: flex;
+    }
+
+    .welcome-action {
+        background-color: var(--accent-color);
+        color: white;
+        padding: 0.8rem 0.5rem;
+        margin: 0.3rem;
+        cursor: pointer;
+    }
+
+    .actions {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+
+
+    }
+
+    .action {
+        background-color: var(--accent-color);
+        color: white;
+        padding: 0.5rem;
+        bottom: 0;
+        cursor: pointer;
+    }
+
+    .right-container {
+        padding: 1rem;
+    }
+
+    .right-container-header {
+        display: flex;
+    }
+
+    .right-container-header>div {
+        margin: 0 0.5rem;
+    }
+
+    .right-container-path {
+        font-size: small;
+        color: dimgray;
+    }
+
+    .right-container-file-structure {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .file-structure-component {
+        display: flex;
+        align-items: center;
+        margin: 0.3rem 0;
+        padding: 0.7rem 0.5rem;
+        background-color: var(--container-color);
+    }
+
+    .file-structure-component-actions {
+        display: flex;
+        justify-self: flex-end;
+        position: absolute;
+        right: 0;
+    }
+
+    .file-structure-component-action {
+
+        padding: 0.3rem;
+        margin: 0 0.5rem;
+        cursor: pointer;
+    }
+
+    .file-structure-component-name {
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .right-container-actions {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 1rem 0;
+    }
+
+    .right-container-action {
+        background-color: var(--accent-color);
+        padding: 0.3rem;
+        color: white;
+        cursor: pointer;
+    }
+
+
+    input {
+        padding: 0.3rem;
+        outline: none;
+    }
+
+    label {
+        margin: 5px 0;
+    }
+
+    .search-document-input {
+        margin: 5px 0;
+    }
+
+    .logo {
+        font-weight: bold;
+        color: var(--accent-color);
+    }
+
+    .navbar>div {
+        margin: 0 0.5rem;
+    }
+
+    .new-member-wrapper {
+        display: flex;
+        position: fixed;
+        flex: 1;
+        flex-grow: 1;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 2;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .new-member-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: var(--container-color);
+        padding: 1rem;
+        position: relative;
+        max-width: 400px;
+    }
+
+    .login-wrapper {
+        background-color: transparent;
+    }
+
+    .new-member-form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .new-member-form>div {
+        display: flex;
+        flex-direction: column;
+        margin: 0.5rem 0;
+    }
+
+    .new-member-submit {
+        background-color: var(--accent-color);
+        color: white;
+        border: none;
+        padding: 0.5rem;
+        cursor: pointer;
+    }
+
+    .access-inner {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .remove-button {
+        position: absolute;
+        right: 5px;
+        z-index: 3;
+        top: 5px;
+        font-size: large;
+        cursor: pointer;
+    }
+
+    .special {
+        background-color: rgb(12 12 12);
+        margin: 0 1px;
+        color: white;
+        padding: 0.1rem;
+    }
+
+
+
+
+    .info {
+        font-size: small;
+        color: gray;
+        text-align: center;
+        margin: 1rem 0;
+    }
+
+    .error-message {
+        color: orangered;
+        text-align: center;
+
+
+    }
+
+    .new-file-wrapper {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.4);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .new-file-container {
+        background-color: var(--container-color);
+        /* display: flex; */
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 1rem;
+        max-width: 400px;
+    }
+
+    .new-file-preview {
+        /* min-width: 200px; */
+        /* aspect-ratio: 1; */
+        width: 100%;
+        /* max-width: 100%; */
+        background-color: var(--border-color-light);
+        height: 200px;
+    }
+
+    .new-file-container>div {
+
+        margin: 1rem 0;
+    }
+
+
+
+    .new-file-upload-button-element {
+        background-color: var(--accent-color);
+        padding: 0.5rem 0;
+        color: white;
+        width: 100%;
+        border: none;
+        cursor: pointer;
+    }
+
+    .new-file-name {
+        margin: 1rem 0;
+    }
+
+    .new-file-original-name {
+        color: var(--accent-color);
+        font-weight: bold;
+    }
+
+    .new-file-size {
+        color: var(--accent-color);
+        font-weight: bold;
+    }
+
+    .preview-image {
+        width: 100%;
+        /* height: 100%; */
+        overflow-y: hidden;
+        object-fit: cover;
+    }
+
+    .sidebar-toggle-button {
+        font-size: large;
+        cursor: pointer;
+    }
+
+    .sidebar-toggle-button-2 {}
+
+    .success-message {
+        position: absolute;
+        left: 50%;
+        top: 0.5rem;
+        transform: translate(-50%, 0);
+        display: flex;
+        background-color: rgb(41, 179, 64);
+        color: white;
+        padding: 0.7rem 1rem;
+    }
+
+    .success-message>div {
+        margin: 0 0.2rem;
+    }
+
+    .error-message-container {
+        position: absolute;
+        left: 50%;
+        top: 0.5rem;
+        transform: translate(-50%, 0);
+        display: flex;
+        background-color: red;
+        color: white;
+        padding: 0.7rem 1rem;
+    }
+
+    .error-message-container>div {
+        margin: 0 0.2rem;
+    }
+
+    .empty-folder {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .diminish {
+        width: 0;
+        overflow: hidden;
+    }
+
+    .invisible {
+        visibility: hidden;
+    }
+
+    .hide {
+        display: none;
+    }
+</style>
+
+<body>
+    <div id="root">
+
+    </div>
+
+</body>
+
+
+
+</html>
