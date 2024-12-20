@@ -137,6 +137,8 @@ function handleRoutes(app, db, gfs) {
                 console.log("Auth successful")
                 const sessionToken = generateSessionToken(16);
                 req.session.sessionId = sessionToken;
+                console.log("Generated session ", sessionToken)
+                console.log("Assigned session ", req.session.sessionId)
                 await db.collection("sessionData").insertOne({ family_id, sessionId: sessionToken })
 
                 res.send({ ok: true });

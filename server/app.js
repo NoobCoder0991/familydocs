@@ -29,6 +29,8 @@ const sessionMiddleware = session({
 
 app.use(sessionMiddleware);
 app.use(cookieParser());
+app.set('trust proxy', 1);
+
 
 const port = process.env.PORT || 5000;
 
