@@ -6,7 +6,7 @@ function Navbar(props) {
             <div className="logo">
                 Family<span className="special">DOCS</span>
             </div>
-            <div className="family-id">
+            {/* <div className="family-id">
                 Family id : <i>{props.family_id}</i>
             </div>
             <div className="creator">
@@ -14,7 +14,7 @@ function Navbar(props) {
                 Creator : <i>{props.creator}</i>
 
 
-            </div>
+            </div> */}
         </div>
     )
 }
