@@ -23,12 +23,16 @@ const sessionMiddleware = session({
     saveUninitialized: false,
     cookie: {
         secure: false,
-        maxAge: 3600000
+        maxAge: 3600000,
+        // sameSite: 'None',
+
     }
 });
 
 app.use(sessionMiddleware);
 app.use(cookieParser());
+app.set('trust proxy', 1);
+
 
 const port = process.env.PORT || 5000;
 

@@ -5,6 +5,7 @@ import Main from "./Main";
 import Navbar from "./Navbar";
 import NewMemberForm from "./NewMemberForm";
 import FileViewer from "./FileViewer";
+import CustomAlert from "./CustomAlert";
 
 function SuccessMessage(props) {
     return (
@@ -74,7 +75,7 @@ function Master() {
         try {
             const family_id = "fid-1";
             const creator = "SHAFAAT HUSSAIN KHAN"
-            const response = await fetch("http://localhost:5000/family-data", {
+            const response = await fetch("https://familydocs-server.onrender.com/family-data", {
                 method: "POST", // Ensure it's a POST request
                 headers: {
                     "Content-Type": "application/json",
@@ -131,13 +132,24 @@ function Master() {
     };
 
     // Loading and error handling
-    if (loading) return <div>Loading...</div>;
+    if (loading) return (
+        <div className="start-loader">
+            <h2 className="start-loader-text">
+                Site Loading
+            </h2>
+
+            <div className="start-loader-text">
+                This website is hosted on Render.com on a free plan. So, it may take upto 50 seconds to load. Please be patient.
+            </div>
+        </div>
+
+    )
     if (error) return <div>Error: {error}</div>;
 
     // Render the main component after data has loaded
     return (
         <>
-
+            {/* <CustomAlert /> */}
             <ErrorMessage message={errorMessage} />
             <SuccessMessage message={successMessage} />
             <NewMemberForm newMemberDetails={newMemberDetails} setNewMemberDetails={setNewMemberDetails} setMembers={setMembers} setFolders={setFolders} setErrorMessage={setErrorMessage} setSuccessMessage={setSuccessMessage} />

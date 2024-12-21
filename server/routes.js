@@ -4,16 +4,19 @@ const { uploadToGridFS, upload } = require("./uploads");
 
 function handleRoutes(app, db, gfs) {
     app.post('/family-data', async (req, res) => {
+        console.log("Requested family data")
         try {
             const sessionId = req.session.sessionId;
             const sessionData = await db.collection("sessionData").findOne({ sessionId })
             if (sessionData) {
+
                 const family_id = sessionData.family_id;
                 const data = await db.collection("family-data").findOne({ family_id })
                 res.send({ ok: true, data })
 
             }
             else {
+                console.log("Failed, no matching for session id :", sessionId)
                 res.send({ ok: false })
             }
 
@@ -131,13 +134,17 @@ function handleRoutes(app, db, gfs) {
             const { family_id, password } = req.body;
             const familyData = await db.collection("families").findOne({ family_id, password });
             if (familyData) {
+                console.log("Auth successful")
                 const sessionToken = generateSessionToken(16);
                 req.session.sessionId = sessionToken;
+                console.log("Generated session ", sessionToken)
+                console.log("Assigned session ", req.session.sessionId)
                 await db.collection("sessionData").insertOne({ family_id, sessionId: sessionToken })
 
                 res.send({ ok: true });
             }
             else {
+                console.log("Auth unsuccessful")
                 res.send({ ok: false, errMessage: "Invalid Credentials" })
             }
 
@@ -181,6 +188,45 @@ function handleRoutes(app, db, gfs) {
 
         }
 
+    })
+
+    app.post('/delete-file', async (req, res) => {
+        try {
+
+            const { folder, file_id } = req.body;
+            if (!folder || !file_id) {
+                res.send({ ok: false, errMessage: "Incomplete fields" })
+            }
+
+            const sessionId = req.session.sessionId;
+            const sessionData = await db.collection("sessionData").findOne({ sessionId })
+
+            if (sessionData) {
+
+                const family_id = sessionData.family_id;
+
+                db.collection.updateOne(
+                    {
+                        family_id: family_id,
+                        "folders.name": folder
+                    },
+                    {
+                        $pull: {
+                            "folders.$.files": { _id: file_id }
+                        }
+                    }
+                );
+
+                res.send({ ok: true })
+            }
+            else {
+                res.send({ ok: false, errMessage: "Unauthorized" })
+            }
+
+
+        } catch (error) {
+
+        }
     })
 
 

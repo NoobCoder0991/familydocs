@@ -135,6 +135,10 @@
         animation: test 0.5s;
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> production
     .right {
         /* background-color: blue; */
         padding: 0.5rem;
@@ -230,6 +234,7 @@
         justify-content: center;
         align-items: center;
         flex-direction: column;
+        overflow: hidden;
 
 
     }
@@ -240,6 +245,8 @@
         padding: 0.5rem;
         bottom: 0;
         cursor: pointer;
+        overflow: hidden;
+        text-wrap: nowrap;
     }
 
     .right-container {
@@ -525,6 +532,19 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+    }
+
+    .start-loader {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .start-loader-text {
+        border: 1px solid grey;
+        border-left: 5px solid var(--accent-color);
+        padding: 0.5rem;
     }
 
     .diminish {

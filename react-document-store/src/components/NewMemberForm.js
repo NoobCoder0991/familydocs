@@ -8,7 +8,7 @@ function NewMemberForm(props) {
             const name = props.newMemberDetails[1];
             const password = props.newMemberDetails[2];
             const access = props.newMemberDetails[3];
-            const response = await fetch('http://localhost:5000/new-member', {
+            const response = await fetch('https://familydocs-server.onrender.com/new-member', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -56,10 +56,20 @@ function NewMemberForm(props) {
     return (
         <div className={`new-member-wrapper ${props.newMemberDetails[0] === false ? 'hide' : ''}`}>
             <div className="new-member-container">
-                <div className="remove-button" onClick={() => { document.getElementsByClassName('new-member-wrapper')[0].style.display = 'none'; }}>
+                <div className="remove-button" onClick={() => {
+                    props.setNewMemberDetails((prev) => {
+                        let arr = [...prev];
+                        arr[0] = false;
+                        arr[1] = '';
+                        arr[2] = '';
+                        arr[3] = 'public'
+                        return arr
+                    })
+                }}>
                     <i className="fas fa-times"></i>
                 </div>
                 <h2 className="new-member-title">
+
                     Create a new member
                 </h2>
                 <div className="new-member-form">
