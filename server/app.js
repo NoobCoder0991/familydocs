@@ -10,7 +10,7 @@ const bodyParser = require("body-parser")
 const app = express();
 app.use(express.static("public"));
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: 'https://familydocs.onrender.com',
     credentials: true
 }));
 app.use(express.json())
@@ -24,7 +24,7 @@ const sessionMiddleware = session({
     cookie: {
         secure: false,
         maxAge: 3600000,
-        // sameSite: 'None',
+        sameSite: 'None',
 
     }
 });

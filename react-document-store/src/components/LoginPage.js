@@ -20,7 +20,7 @@ function LoginPage() {
         const payload = { family_id, password };
 
         try {
-            const response = await fetch('http://localhost:5000/family-auth', {
+            const response = await fetch('https://familydocs-server.onrender.com/family-auth', {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload),
