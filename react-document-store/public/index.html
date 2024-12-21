@@ -92,19 +92,49 @@
     }
 
     .left {
-
         background-color: whitesmoke;
+        width: 300px;
+        max-width: 50%;
         overflow: hidden;
-
+        animation: inverse-test 0.5s;
     }
 
     @media screen and (max-width:900px) {
         .left {
             position: absolute;
             height: 100%;
+            max-width: 70%;
         }
 
     }
+
+
+    @keyframes test {
+        0% {
+            width: 300px;
+        }
+
+        100% {
+            width: 0;
+        }
+
+    }
+
+    @keyframes inverse-test {
+        0% {
+            width: 0;
+        }
+
+        100% {
+            width: 300px;
+        }
+
+    }
+
+    .diminish {
+        animation: test 0.5s;
+    }
+
 
     .right {
         /* background-color: blue; */
