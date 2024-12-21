@@ -190,6 +190,45 @@ function handleRoutes(app, db, gfs) {
 
     })
 
+    app.post('/delete-file', async (req, res) => {
+        try {
+
+            const { folder, file_id } = req.body;
+            if (!folder || !file_id) {
+                res.send({ ok: false, errMessage: "Incomplete fields" })
+            }
+
+            const sessionId = req.session.sessionId;
+            const sessionData = await db.collection("sessionData").findOne({ sessionId })
+
+            if (sessionData) {
+
+                const family_id = sessionData.family_id;
+
+                db.collection.updateOne(
+                    {
+                        family_id: family_id,
+                        "folders.name": folder
+                    },
+                    {
+                        $pull: {
+                            "folders.$.files": { _id: file_id }
+                        }
+                    }
+                );
+
+                res.send({ ok: true })
+            }
+            else {
+                res.send({ ok: false, errMessage: "Unauthorized" })
+            }
+
+
+        } catch (error) {
+
+        }
+    })
+
 
 
 

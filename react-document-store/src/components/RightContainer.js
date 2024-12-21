@@ -125,6 +125,51 @@ function FileStructureComponent(props) {
         URL.revokeObjectURL(link);
     };
 
+    const deleteFile = async () => {
+        try {
+
+            const response = await fetch("https://familydocs-server.onrender.com/delete-file", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ folder: props.activeFolder, file_id: props.file_id }),
+                credentials: 'include'
+            })
+            if (!response.ok) {
+                setErrorMessage("Error sending request")
+                setSuccessMessage('')
+            }
+
+            const data = await response.json();
+            if (data.ok == true) {
+                setSuccessMessage('Successfully deleted the message')
+                setErrorMessage('')
+                setMembers((prev) => {
+                    let arr = [...prev];
+                    for (let i = 0; i < arr.length; i++) {
+                        const member = arr[i];
+                        if (member.member_name == props.activeFolder) {
+
+                            member.files = member.file.filter((file) => {
+                                file.file_id != props.file_id;
+                            })
+
+                            break;
+                        }
+                    }
+
+                    return arr;
+                })
+            }
+            else {
+                setErrorMessage(data.errMessage)
+                setSuccessMessage('')
+            }
+
+        } catch (error) {
+            setErrorMessage('Unexpected error occured')
+        }
+    }
+
     // Helper function to get a file extension from the content type
     const getFileExtensionFromContentType = (contentType) => {
         const extensionMap = {
