@@ -5,6 +5,7 @@ import Main from "./Main";
 import Navbar from "./Navbar";
 import NewMemberForm from "./NewMemberForm";
 import FileViewer from "./FileViewer";
+import CustomAlert from "./CustomAlert";
 
 function SuccessMessage(props) {
     return (
@@ -148,7 +149,7 @@ function Master() {
     // Render the main component after data has loaded
     return (
         <>
-
+            {/* <CustomAlert /> */}
             <ErrorMessage message={errorMessage} />
             <SuccessMessage message={successMessage} />
             <NewMemberForm newMemberDetails={newMemberDetails} setNewMemberDetails={setNewMemberDetails} setMembers={setMembers} setFolders={setFolders} setErrorMessage={setErrorMessage} setSuccessMessage={setSuccessMessage} />
