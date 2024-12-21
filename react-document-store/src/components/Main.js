@@ -9,7 +9,7 @@ function Main(props) {
     return (
         <div className="main">
             <LeftContainer setNewMemberDetails={props.setNewMemberDetails} setFolders={props.setFolders} sidebarVisibility={sidebarVisibility} setSidebarVisibility={setSidebarVisibility} setActiveFolder={props.setActiveFolder} folders={props.folders} activeFolder={props.activeFolder} />
-            <RightContainer setNewMemberDetails={props.setNewMemberDetails} setMembers={props.setMembers} errorMessage={props.errorMessage} setErrorMessage={props.setErrorMessage} successMessage={props.successMessage} setSuccessMessage={props.setSuccessMessage} sidebarVisibility={sidebarVisibility} setSidebarVisibility={setSidebarVisibility} members={props.members} activeFolder={props.activeFolder} setFileSrc={props.setFileSrc} />
+            <RightContainer setCustomAlertDetails={props.setCustomAlertDetails} setNewMemberDetails={props.setNewMemberDetails} setMembers={props.setMembers} errorMessage={props.errorMessage} setErrorMessage={props.setErrorMessage} successMessage={props.successMessage} setSuccessMessage={props.setSuccessMessage} sidebarVisibility={sidebarVisibility} setSidebarVisibility={setSidebarVisibility} members={props.members} activeFolder={props.activeFolder} setFileSrc={props.setFileSrc} />
         </div>
     )
 }

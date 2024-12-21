@@ -126,6 +126,8 @@ function FileStructureComponent(props) {
     };
 
     const deleteFile = async () => {
+
+        console.log("Deleting file funciton calling")
         try {
 
             const response = await fetch("http://localhost:5000/delete-file", {
@@ -135,22 +137,25 @@ function FileStructureComponent(props) {
                 credentials: 'include'
             })
             if (!response.ok) {
-                setErrorMessage("Error sending request")
-                setSuccessMessage('')
+                props.setErrorMessage("Error sending request")
+                props.setSuccessMessage('')
             }
 
             const data = await response.json();
             if (data.ok == true) {
-                setSuccessMessage('Successfully deleted the message')
-                setErrorMessage('')
-                setMembers((prev) => {
+
+
+                props.setSuccessMessage('Successfully deleted the message')
+                props.setErrorMessage('')
+                props.setMembers((prev) => {
                     let arr = [...prev];
                     for (let i = 0; i < arr.length; i++) {
                         const member = arr[i];
-                        if (member.member_name == props.activeFolder) {
 
-                            member.files = member.file.filter((file) => {
-                                file.file_id != props.file_id;
+                        if (member.member_name == props.activeFolder) {
+                            console.log(member.member_name, props.activeFolder)
+                            member.files = member.files.filter((file) => {
+                                return file.file_id != props.file_id;
                             })
 
                             break;
@@ -161,12 +166,12 @@ function FileStructureComponent(props) {
                 })
             }
             else {
-                setErrorMessage(data.errMessage)
-                setSuccessMessage('')
+                props.setErrorMessage(data.errMessage)
+                props.setSuccessMessage('')
             }
 
         } catch (error) {
-            setErrorMessage('Unexpected error occured')
+            props.setErrorMessage('Unexpected error occured')
         }
     }
 
@@ -204,7 +209,18 @@ function FileStructureComponent(props) {
                 <div onClick={downloadFile} className="file-structure-component-action">
                     <i className="fas fa-download"></i>
                 </div>
-                <div className="file-structure-component-action">
+                <div onClick={() => {
+                    props.setCustomAlertDetails((prev) => {
+                        let obj = { ...prev };
+                        obj.visible = true
+                        obj.title = "Delete File"
+                        obj.message = `Do you really want to delete ${props.file_name}`
+                        obj.proceed = 'Delete'
+                        obj.warning = true;
+                        obj.fun = deleteFile
+                        return obj
+                    })
+                }} className="file-structure-component-action">
                     <i className="fas fa-trash"></i>
                 </div>
             </div>
@@ -407,6 +423,11 @@ function RightComponent(props) {
                             file_name={file.file_name}
                             file_id={file.file_id}
                             setFileSrc={props.setFileSrc}
+                            setCustomAlertDetails={props.setCustomAlertDetails}
+                            setErrorMessage={props.setErrorMessage}
+                            setSuccessMessage={props.setSuccessMessage}
+                            activeFolder={props.activeFolder}
+                            setMembers={props.setMembers}
 
                         />
                     ))
@@ -455,6 +476,11 @@ function RightContainer(props) {
                             previewSrc={previewSrc}
                             setPreviewSrc={setPreviewSrc}
                             setFileSrc={props.setFileSrc}
+                            setCustomAlertDetails={props.setCustomAlertDetails}
+                            setErrorMessage={props.setErrorMessage}
+                            setSuccessMessage={props.setSuccessMessage}
+                            activeFolder={props.activeFolder}
+                            setMembers={props.setMembers}
                         />
                     ))
 

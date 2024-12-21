@@ -47,7 +47,7 @@ async function main() {
 
         // Start the server
         app.listen(port, () => {
-            console.log(`Server is listening at port ${port}`);
+            console.log(`Server is listening locally at port ${port}`);
         });
     } catch (error) {
         console.error("Error initializing database:", error);

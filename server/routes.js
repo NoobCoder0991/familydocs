@@ -194,6 +194,8 @@ function handleRoutes(app, db, gfs) {
         try {
 
             const { folder, file_id } = req.body;
+
+            console.log("Deleting file : ", folder, file_id)
             if (!folder || !file_id) {
                 res.send({ ok: false, errMessage: "Incomplete fields" })
             }
@@ -205,17 +207,19 @@ function handleRoutes(app, db, gfs) {
 
                 const family_id = sessionData.family_id;
 
-                db.collection.updateOne(
+                db.collection("family-data").updateOne(
                     {
                         family_id: family_id,
                         "folders.name": folder
                     },
                     {
                         $pull: {
-                            "folders.$.files": { _id: file_id }
+                            "folders.$.files": { file_id: new ObjectId(file_id) }
                         }
                     }
                 );
+
+                console.log("Successfully deleted file")
 
                 res.send({ ok: true })
             }
@@ -225,6 +229,10 @@ function handleRoutes(app, db, gfs) {
 
 
         } catch (error) {
+
+            console.log(error)
+
+            res.send({ ok: false, errMessage: "Internal server error" })
 
         }
     })

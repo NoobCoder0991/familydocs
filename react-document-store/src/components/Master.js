@@ -48,6 +48,7 @@ function Master() {
     const [successMessage, setSuccessMessage] = useState(null)
     const [fileSrc, setFileSrc] = useState()
     const [newMemberDetails, setNewMemberDetails] = useState([false, '', '', 'public'])
+    const [customAlertDetails, setCustomAlertDetails] = useState({ visible: false, title: 'Delete Message', message: 'Do you really want to delete this message', proceed: 'Delete', cancel: '', warning: true, fun: function () { } })
 
     useEffect(() => {
         if (errorMessage) {
@@ -75,7 +76,7 @@ function Master() {
         try {
             const family_id = "fid-1";
             const creator = "SHAFAAT HUSSAIN KHAN"
-            const response = await fetch("https://familydocs-server.onrender.com/family-data", {
+            const response = await fetch("http://localhost:5000/family-data", {
                 method: "POST", // Ensure it's a POST request
                 headers: {
                     "Content-Type": "application/json",
@@ -149,7 +150,7 @@ function Master() {
     // Render the main component after data has loaded
     return (
         <>
-            {/* <CustomAlert /> */}
+            <CustomAlert setCustomAlertDetails={setCustomAlertDetails} customAlertDetails={customAlertDetails} />
             <ErrorMessage message={errorMessage} />
             <SuccessMessage message={successMessage} />
             <NewMemberForm newMemberDetails={newMemberDetails} setNewMemberDetails={setNewMemberDetails} setMembers={setMembers} setFolders={setFolders} setErrorMessage={setErrorMessage} setSuccessMessage={setSuccessMessage} />
@@ -168,6 +169,7 @@ function Master() {
                 setSuccessMessage={setSuccessMessage}
                 setFileSrc={setFileSrc}
                 setNewMemberDetails={setNewMemberDetails}
+                setCustomAlertDetails={setCustomAlertDetails}
             />
         </>
     );
