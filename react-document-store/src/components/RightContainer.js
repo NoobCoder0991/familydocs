@@ -98,36 +98,57 @@ function displayFile(fileURL, contentType) {
 
 function FileStructureComponent(props) {
 
+    const [deletingFile, setDeletingFile] = useState(false)
+    const [downloadingFile, setDownloadingFile] = useState(false)
+
     const viewFile = async () => {
         const { link, contentType } = await getFile(props.file_id);
         displayFile(link, contentType);
     };
 
     const downloadFile = async () => {
-        // Get the file link (Blob URL) and content type from getFile
-        const { link, contentType } = await getFile(props.file_id);
+        if (downloadingFile) {
+            return;
+        }
 
-        // Create a temporary download link element
-        const downloadLink = document.createElement('a');
-        downloadLink.href = link; // Set the link to the Blob URL returned by getFile
+        setDownloadingFile(true)
 
-        // Determine the file extension based on the content type (optional)
-        const fileExtension = getFileExtensionFromContentType(contentType);
-        const filePreName = `${props.file_name.split(' ').join('_')}`
-        const filename = `${filePreName}${fileExtension ? `.${fileExtension}` : ''}`;
+        try {
+            const { link, contentType } = await getFile(props.file_id);
 
-        downloadLink.download = filename; // Use the determined filename or a default name
+            const downloadLink = document.createElement('a');
+            downloadLink.href = link; // Set the link to the Blob URL returned by getFile
 
-        // Trigger the download by simulating a click on the link
-        downloadLink.click();
+            const fileExtension = getFileExtensionFromContentType(contentType);
+            const filePreName = `${props.file_name.split(' ').join('_')}`
+            const filename = `${filePreName}${fileExtension ? `.${fileExtension}` : ''}`;
 
-        // Cleanup the object URL (optional but recommended)
-        URL.revokeObjectURL(link);
+            downloadLink.download = filename; // Use the determined filename or a default name
+
+            downloadLink.click();
+
+            URL.revokeObjectURL(link);
+
+        } catch (error) {
+
+            props.setErrorMessage("Could not download file")
+            props.setSuccessMessage('')
+
+        }
+        finally {
+            setDownloadingFile(false)
+        }
+
     };
 
     const deleteFile = async () => {
 
-        console.log("Deleting file funciton calling")
+        if (deletingFile) {
+            return;
+        }
+
+        setDeletingFile(false)
+
         try {
 
             const response = await fetch("https://familydocs-server.onrender.com/delete-file", {
@@ -173,6 +194,9 @@ function FileStructureComponent(props) {
         } catch (error) {
             props.setErrorMessage('Unexpected error occured')
         }
+        finally {
+            setDeletingFile(false)
+        }
     }
 
     // Helper function to get a file extension from the content type
@@ -203,11 +227,15 @@ function FileStructureComponent(props) {
                 {props.file_name}
             </div>
             <div className="file-structure-component-actions">
-                <div onClick={viewFile} className="file-structure-component-action">
+                {/* <div onClick={viewFile} className="file-structure-component-action">
                     <i className="fas fa-eye"></i>
-                </div>
-                <div onClick={downloadFile} className="file-structure-component-action">
-                    <i className="fas fa-download"></i>
+                </div> */}
+                <div onClick={downloadFile} className="file-structure-component-action download-action">
+
+                    {
+                        downloadingFile ? <div className={`center disabled`}> <div className="loader"> </div><span> &nbsp;Download</span></div> : <><i className="fas fa-download"></i> Download</>
+
+                    }
                 </div>
                 <div onClick={() => {
                     props.setCustomAlertDetails((prev) => {
@@ -215,16 +243,22 @@ function FileStructureComponent(props) {
                         obj.visible = true
                         obj.title = "Delete File"
                         obj.message = `Do you really want to delete ${props.file_name}`
-                        obj.proceed = 'Delete'
+                        if (deletingFile) {
+                            obj.proceed = <div className="center"><div className="loader"></div> &nbsp; Deleting</div>
+                        }
+                        else {
+                            obj.proceed = 'Delete'
+                        }
+                        // obj.proceed = {`${deletingFile ? <div className="loader"></div> : 'Delete'}`}
                         obj.warning = true;
                         obj.fun = deleteFile
                         return obj
                     })
-                }} className="file-structure-component-action">
-                    <i className="fas fa-trash"></i>
+                }} className={`file-structure-component-action delete-action`}>
+                    <i className="fas fa-trash"></i> Delete
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 const fileType = (file) => {
@@ -313,8 +347,15 @@ function NewFileSubmitComponent(props) {
     };
 
     const [customFileName, setCustomFileName] = useState('')
+    const [newFileUploading, setNewFileUploading] = useState(false)
 
     const uploadNewFile = async () => {
+
+        if (newFileUploading) {
+            return;
+        }
+
+        setNewFileUploading(true)
 
         try {
             const formData = new FormData();
@@ -370,6 +411,7 @@ function NewFileSubmitComponent(props) {
 
         finally {
             props.setnewFile(null)
+            setNewFileUploading(false)
         }
 
 
@@ -391,7 +433,18 @@ function NewFileSubmitComponent(props) {
                     </div>
 
                     <div className="new-file-upload-button">
-                        <button onClick={uploadNewFile} className="new-file-upload-button-element">Upload</button>
+                        <button onClick={uploadNewFile} className={`new-file-upload-button-element ${newFileUploading ? 'disabled' : ''}`}>
+                            {
+                                newFileUploading ? (
+                                    <div>
+                                        <div className="loader"></div>
+                                    </div>
+                                ) : (
+                                    <div>Upload</div>
+                                )
+                            }
+                        </button>
+
                     </div>
                 </div>
                 <div className="info">If name is not provided, then the default name of the file will be set.</div>

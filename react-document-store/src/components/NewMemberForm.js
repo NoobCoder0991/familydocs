@@ -1,8 +1,16 @@
+import { useState } from "react";
 
 
 function NewMemberForm(props) {
 
+    const [newMemberUploading, setNewMemberUploading] = useState(false);
+
     const addNewMember = async () => {
+        if (newMemberUploading) {
+            return;
+        }
+
+        setNewMemberUploading(true)
 
         try {
             const name = props.newMemberDetails[1];
@@ -52,6 +60,19 @@ function NewMemberForm(props) {
 
         }
 
+        finally {
+            setNewMemberUploading(false)
+            props.setNewMemberDetails((prev) => {
+                let arr = [...prev];
+                arr[0] = false;
+                arr[1] = '';
+                arr[2] = ''
+                arr[3] = 'public';
+                return arr;
+            })
+
+        }
+
     }
     return (
         <div className={`new-member-wrapper ${props.newMemberDetails[0] === false ? 'hide' : ''}`}>
@@ -76,7 +97,7 @@ function NewMemberForm(props) {
                     <form action="" className="new-member-form" autoComplete="off">
                         <div className="new-member-name">
                             <label htmlFor="name">Name of the member</label>
-                            <input
+                            <input autoComplete="false" aria-autocomplete="false"
                                 onChange={(event) => {
                                     props.setNewMemberDetails((prev) => {
                                         const updatedDetails = [...prev];
@@ -111,7 +132,7 @@ function NewMemberForm(props) {
                                     <label htmlFor="public">Public</label>
                                 </div>
                                 <div className="private-access">
-                                    <input
+                                    <input autoComplete="false"
                                         onChange={() => {
                                             props.setNewMemberDetails((prev) => {
                                                 const updatedDetails = [...prev];
@@ -130,8 +151,8 @@ function NewMemberForm(props) {
                         </div>
 
                         <div className="new-member-password">
-                            <label htmlFor="password">Create a password for the member</label>
-                            <input
+                            <label htmlFor="password">Create an Access key for the member</label>
+                            <input autoComplete="false"
                                 onChange={(event) => {
                                     props.setNewMemberDetails((prev) => {
                                         const updatedDetails = [...prev];
@@ -146,7 +167,14 @@ function NewMemberForm(props) {
                             />
                         </div>
 
-                        <input onClick={addNewMember} className="new-member-submit" type="submit" />
+                        <button
+                            onClick={addNewMember}
+                            className={`new-member-submit ${newMemberUploading ? 'disabled' : ''}`}
+                            type="button" // Change to "button" to prevent form submission
+                            disabled={newMemberUploading} // Optional, to prevent clicks when uploading
+                        >
+                            {newMemberUploading ? <div className="loader"></div> : 'Submit'}
+                        </button>
                     </form>
                 </div>
             </div>

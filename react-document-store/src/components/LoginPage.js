@@ -7,9 +7,16 @@ function LoginPage() {
     const [family_id, setFamilyId] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [isLoggingIn, setIsLoggingIn] = useState(false)
 
     const submitNewMember = async (event) => {
+
         event.preventDefault(); // Prevent form from submitting automatically
+        if (isLoggingIn) {
+            return;
+        }
+
+        setIsLoggingIn(true)
 
         // Basic validation to check if both fields are filled
         if (!family_id || !password) {
@@ -43,6 +50,9 @@ function LoginPage() {
             }
         } catch (error) {
             setError("Internal server error");
+        }
+        finally {
+            setIsLoggingIn(false)
         }
     };
 
@@ -86,7 +96,9 @@ function LoginPage() {
                         )}
 
                         <button type="submit" className="new-member-submit">
-                            Submit
+                            {
+                                isLoggingIn ? <div className="center disabled"><div className="loader"></div> &nbsp; Submit</div> : 'Submit'
+                            }
                         </button>
 
                         <div className="info">
