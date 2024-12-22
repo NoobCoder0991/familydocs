@@ -1,6 +1,10 @@
+import { useState } from "react";
 
 
 function CustomAlert(props) {
+
+    const [running, setRunning] = useState(false)
+
     return (
         <div className={`custom-alert-wrapper ${!props.customAlertDetails || props.customAlertDetails.visible == false ? 'hide' : ''}`}>
 
@@ -14,33 +18,37 @@ function CustomAlert(props) {
 
                 <div className="custom-alert-actions">
                     <div onClick={async () => {
+                        setRunning(true)
                         await props.customAlertDetails.fun();
+                        setRunning(false)
                         props.setCustomAlertDetails((prev) => {
                             let obj = { ...prev };
-                            prev.visible = false;
-                            prev.title = '';
-                            prev.message = '';
-                            prev.proceed = '';
-                            prev.fun = function () { }
+                            obj.visible = false;
+                            obj.title = '';
+                            obj.message = '';
+                            obj.proceed = '';
+                            obj.fun = function () { }
 
-                            return prev;
+                            return obj;
 
 
                         })
-                    }} className={`custom-alert-action custom-alert-proceed ${props.customAlertDetails.warning ? 'custom-alert-warning' : ''}`}>{props.customAlertDetails.proceed || 'Proceed'}</div>
+                    }} className={`custom-alert-action custom-alert-proceed ${running ? 'disabled' : ''} ${props.customAlertDetails.warning ? 'custom-alert-warning' : ''}`}>{props.customAlertDetails.proceed || 'Proceed'}</div>
                     <div onClick={() => {
+                        setRunning(false)
                         props.setCustomAlertDetails((prev) => {
                             let obj = { ...prev };
-                            prev.visible = false;
-                            prev.title = '';
-                            prev.message = '';
-                            prev.proceed = '';
-                            prev.fun = function () { }
+                            obj.visible = false;
+                            obj.title = '';
+                            obj.message = '';
+                            obj.proceed = '';
+                            obj.fun = function () { }
 
-                            return prev;
+                            return obj;
 
 
                         })
+
                     }} className="custom-alert-action custom-alert-cancel">{props.customAlertDetails.cancel || 'Cancel'}</div>
                 </div>
             </div>

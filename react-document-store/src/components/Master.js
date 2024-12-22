@@ -34,6 +34,25 @@ function ErrorMessage(props) {
 
 }
 
+
+function Test(props) {
+    if (props.isLoading) {
+        return (
+
+            <div>
+                <i className="fas fa-spinner fa-spin"></i> Loading
+            </div>
+
+        )
+    }
+    else {
+        return (
+
+            <div > Load </div>
+
+        )
+    }
+}
 function Master() {
     // State to hold fetched data
     const navigate = useNavigate()
