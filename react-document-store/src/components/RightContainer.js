@@ -233,7 +233,7 @@ function FileStructureComponent(props) {
                 <div onClick={downloadFile} className="file-structure-component-action download-action">
 
                     {
-                        downloadingFile ? <div className={`center disabled`}> <div className="loader"> </div><span> &nbsp;Download</span></div> : <><i className="fas fa-download"></i> Download</>
+                        downloadingFile ? <div className={`center disabled`}> <div className="loader"> </div></div> : <i className="fas fa-download"></i>
 
                     }
                 </div>
@@ -255,7 +255,7 @@ function FileStructureComponent(props) {
                         return obj
                     })
                 }} className={`file-structure-component-action delete-action`}>
-                    <i className="fas fa-trash"></i> Delete
+                    <i className="fas fa-trash"></i>
                 </div>
             </div>
         </div >
