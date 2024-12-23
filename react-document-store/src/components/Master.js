@@ -7,6 +7,9 @@ import NewMemberForm from "./NewMemberForm";
 import FileViewer from "./FileViewer";
 import CustomAlert from "./CustomAlert";
 
+const API_URL = process.env.NODE_ENV == 'production' ? 'https://familydocs-server.onrender.com' : 'http://localhost:5000'
+
+
 function SuccessMessage(props) {
     return (
         <div className={`success-message ${!props.message || props.message.length == 0 ? 'hide' : ''}`}>
@@ -95,7 +98,8 @@ function Master() {
         try {
             const family_id = "fid-1";
             const creator = "SHAFAAT HUSSAIN KHAN"
-            const response = await fetch("https://familydocs-server.onrender.com/family-data", {
+            console.log("API_URL", API_URL)
+            const response = await fetch(`${API_URL}/family-data`, {
                 method: "POST", // Ensure it's a POST request
                 headers: {
                     "Content-Type": "application/json",

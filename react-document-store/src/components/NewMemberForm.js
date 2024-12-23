@@ -1,4 +1,5 @@
 import { useState } from "react";
+const API_URL = process.env.NODE_ENV == 'production' ? 'https://familydocs-server.onrender.com' : 'http://localhost:5000'
 
 
 function NewMemberForm(props) {
@@ -16,7 +17,7 @@ function NewMemberForm(props) {
             const name = props.newMemberDetails[1];
             const password = props.newMemberDetails[2];
             const access = props.newMemberDetails[3];
-            const response = await fetch('https://familydocs-server.onrender.com/new-member', {
+            const response = await fetch(`${API_URL}/new-member`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

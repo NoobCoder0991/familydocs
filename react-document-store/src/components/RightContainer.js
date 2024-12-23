@@ -5,9 +5,11 @@ import * as pdfjsLib from "pdfjs-dist";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
 
+const API_URL = process.env.NODE_ENV == 'production' ? 'https://familydocs-server.onrender.com' : 'http://localhost:5000'
+
 async function getFile(file_id) {
     try {
-        const response = await fetch(`https://familydocs-server.onrender.com/files/id`, {
+        const response = await fetch(`${API_URL}/files/id`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ id: file_id }),
@@ -151,7 +153,7 @@ function FileStructureComponent(props) {
 
         try {
 
-            const response = await fetch("https://familydocs-server.onrender.com/delete-file", {
+            const response = await fetch(`${API_URL}/delete-file`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ folder: props.activeFolder, file_id: props.file_id }),
@@ -223,6 +225,7 @@ function FileStructureComponent(props) {
 
     return (
         <div className="file-structure-component">
+
             <div className="file-structure-component-name">
                 {props.file_name}
             </div>
@@ -364,7 +367,7 @@ function NewFileSubmitComponent(props) {
             formData.append("newFileName", customFileName.length ? customFileName : props.newFile.name);
             formData.append('type', fileType(props.newFile))
 
-            const response = await fetch("https://familydocs-server.onrender.com/upload", {
+            const response = await fetch(`${API_URL}/upload`, {
                 method: "POST",
                 body: formData, // Pass formData directly
                 credentials: 'include' // Include cookies for session
@@ -461,7 +464,7 @@ function RightComponent(props) {
     return (
         <div className={`right-container ${!props.is_active ? 'hide' : ''}`}>
             <div className="right-container-header">
-                <div className="back-icon fas fa-arrow-left"></div>
+                {/* <div className="back-icon fas fa-arrow-left"></div> */}
                 <div className="right-container-folder">{props.member_name}</div>
             </div>
 

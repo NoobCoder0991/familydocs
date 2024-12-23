@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+const API_URL = process.env.NODE_ENV == 'production' ? 'https://familydocs-server.onrender.com' : 'http://localhost:5000'
+
 
 function LoginPage() {
     const navigate = useNavigate()
@@ -27,7 +29,7 @@ function LoginPage() {
         const payload = { family_id, password };
 
         try {
-            const response = await fetch('https://familydocs-server.onrender.com/family-auth', {
+            const response = await fetch(`${API_URL}/family-auth`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload),

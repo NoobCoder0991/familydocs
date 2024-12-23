@@ -6,11 +6,12 @@ const cookieParser = require("cookie-parser")
 const { initializeDatabase, getDatabase } = require("./database");
 const handleRoutes = require("./routes");
 const bodyParser = require("body-parser")
+require("dotenv")
 
 const app = express();
 app.use(express.static("public"));
 app.use(cors({
-    origin: 'https://familydocs.onrender.com',
+    origin: process.env.NODE_ENV == "production" ? 'https://familydocs.onrender.com' : 'http://localhost:3000',
     credentials: true
 }));
 app.use(express.json())
@@ -22,9 +23,9 @@ const sessionMiddleware = session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: true,
+        secure: process.env.NODE_ENV == "production" ? true : false,
         maxAge: 3600000,
-        sameSite: 'None',
+        sameSite: process.env.NODE_ENV == 'production' ? 'None' : '',
 
     }
 });
