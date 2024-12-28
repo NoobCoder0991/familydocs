@@ -6,6 +6,9 @@ function Navbar(props) {
             <div className="logo">
                 Family<span className="special">DOCS</span>
             </div>
+            <div>
+                Ping : <span>235ms</span>
+            </div>
             {/* <div className="family-id">
                 Family id : <i>{props.family_id}</i>
             </div>

@@ -71,6 +71,20 @@ function Master() {
     const [fileSrc, setFileSrc] = useState()
     const [newMemberDetails, setNewMemberDetails] = useState([false, '', '', 'public'])
     const [customAlertDetails, setCustomAlertDetails] = useState({ visible: false, title: 'Delete Message', message: 'Do you really want to delete this message', proceed: 'Delete', cancel: '', warning: true, fun: function () { } })
+    const [ping, setPing] = useState(null);
+
+
+
+    useEffect(() => {
+        if (ping !== null) {
+            const timer = setTimeout(() => {
+                console.log("Fetching Ping");
+                setPing(Date.now()); // or whatever condition you want to trigger the next fetch
+            }, 3000);
+
+            return () => clearTimeout(timer);
+        }
+    }, [ping]);
 
     useEffect(() => {
         if (errorMessage) {
